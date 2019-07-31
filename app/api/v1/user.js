@@ -6,7 +6,8 @@ const router = new Router({
 });
 
 router.get('/', async ctx => {
-  ctx.body = 'get';
+  const users = await User.findAndCountAll();
+  ctx.body = { users };
 });
 
 router.post('/', async ctx => {
