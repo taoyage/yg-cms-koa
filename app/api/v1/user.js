@@ -1,13 +1,13 @@
 const Router = require('koa-router');
-const User = require('../../models/user');
+const User = require('@models/user');
 
 const router = new Router({
-  prefix: '/v1/user'
+  prefix: '/api/v1/user'
 });
 
 router.get('/', async ctx => {
-  const users = await User.findAndCountAll();
-  ctx.body = { users };
+  const user = await User.findAndCountAll();
+  ctx.body = user;
 });
 
 router.post('/', async ctx => {

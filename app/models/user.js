@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
-const db = require('../../core/db');
 const { Sequelize, Model } = require('sequelize');
-const { AuthFailed } = require('../../core/http-exception');
+const db = require('@core/db');
+const { AuthFailed } = require('@core/http-exception');
 
 class User extends Model {
   /**
@@ -55,7 +55,7 @@ User.init(
       validate: { notNull: true }
     }
   },
-  { sequelize: db }
+  { sequelize: db, tableName: 'user' }
 );
 
 module.exports = User;

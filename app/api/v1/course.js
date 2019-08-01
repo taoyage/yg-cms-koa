@@ -1,7 +1,8 @@
 const Router = require('koa-router');
+const Course = require('../../models/Course');
 
 const router = new Router({
-  prefix: '/v1/course'
+  prefix: '/api/v1/course'
 });
 
 router.get('/', async ctx => {
@@ -9,7 +10,8 @@ router.get('/', async ctx => {
 });
 
 router.post('/', async ctx => {
-  ctx.body = 'post';
+  await User.create(ctx.request.body);
+  ctx.body = 'success';
 });
 
 router.put('/', async ctx => {
