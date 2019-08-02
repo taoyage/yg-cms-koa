@@ -1,21 +1,21 @@
 {
-  "name": "weapp-server",
+  "name": "yg-cms-koa",
   "version": "1.0.0",
-  "description": "mini program server",
-  "main": "app.js",
+  "description": "Build a CMS using koa.js",
+  "main": "app/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/taoyage/weapp-server.git"
+    "url": "git+https://github.com/taoyage/yg-cms-koa.git"
   },
   "author": "taoyage",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/taoyage/weapp-server/issues"
+    "url": "https://github.com/taoyage/yg-cms-koa/issues"
   },
-  "homepage": "https://github.com/taoyage/weapp-server#readme",
+  "homepage": "https://github.com/taoyage/yg-cms-koa#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1",
@@ -34,8 +34,9 @@
     "@models": "app/models",
     "@validator": "app/validators/validator.js",
     "@utils": "app/utils",
-    "@core": "core",
-    "@config": "config",
-    "@middlewares": "middlewares"
+    "@core": "app/core",
+    "@config": "app/config",
+    "@middlewares": "app/middlewares",
+    "@validators": "app/validators"
   }
 }

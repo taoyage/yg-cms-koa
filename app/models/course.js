@@ -1,4 +1,4 @@
-const db = require('../../core/db');
+const db = require('@core/db');
 const { Sequelize, Model } = require('sequelize');
 
 class Course extends Model {}

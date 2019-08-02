@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { security } = require('../../config/config');
+const { security } = require('@config/security');
 
 const generateToken = (uid, scope) => {
   const { secretKey, expiresIn } = security;

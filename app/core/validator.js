@@ -1,3 +1,9 @@
+/**
+ * Lin-Validator v2
+ * 作者：7七月
+ * 微信公众号：林间有风
+ */
+
 const validator = require('validator');
 const { ParameterException } = require('./http-exception');
 const { get, last, set, cloneDeep } = require('lodash');
@@ -49,6 +55,7 @@ class LinValidator {
   }
 
   async validate(ctx, alias = {}) {
+    
     this.alias = alias;
     let params = this._assembleAllParams(ctx);
     this.data = cloneDeep(params);
@@ -81,10 +88,7 @@ class LinValidator {
         await this[key](this.data);
         result = new RuleResult(true);
       } catch (error) {
-        result = new RuleResult(
-          false,
-          error.msg || error.message || '参数错误'
-        );
+        result = new RuleResult(false, error.msg || error.message || '参数错误');
       }
       // 函数验证
     } else {
@@ -158,6 +162,7 @@ class LinValidator {
 
 class RuleResult {
   constructor(pass, msg = '') {
+    console.log(msg);
     Object.assign(this, {
       pass,
       msg

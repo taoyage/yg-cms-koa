@@ -1,5 +1,5 @@
 const { HttpException } = require('../core/http-exception');
-const { env } = require('../config/config');
+const { env } = require('@config/security');
 
 const catchError = async (ctx, next) => {
   try {
