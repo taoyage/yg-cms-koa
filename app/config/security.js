@@ -1,6 +1,6 @@
 module.exports = {
   database: {
-    dbName: 'subscribe',
+    dbName: 'yg-cms',
     host: '47.99.217.253',
     port: 3306,
     user: 'root',

@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 const { security } = require('@config/security');
 
 const generateToken = (uid, scope) => {
@@ -7,4 +7,4 @@ const generateToken = (uid, scope) => {
   return token;
 };
 
-module.exports = generateToken;
+module.exports = { generateToken };

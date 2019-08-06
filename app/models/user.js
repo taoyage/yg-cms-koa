@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const { Sequelize, Model } = require('sequelize');
 const db = require('@core/db');
 const { AuthFailed } = require('@core/http-exception');
@@ -6,20 +6,21 @@ const { AuthFailed } = require('@core/http-exception');
 class User extends Model {
   /**
    * 验证用户登录账号密码
-   * @param {*} contact
+   * @param {*} username
    * @param {*} password
    */
-  static async verifyUser(contact, password) {
+  static async verify(username, password) {
     const user = await User.findOne({
       where: {
-        contact
+        username
       }
     });
     if (!user) {
       throw new AuthFailed('账号不存在');
     }
 
-    const correct = bcrypt.compareSync(password, user.password);
+    const correct = await bcrypt.compare(password, user.password);
+
     if (!correct) {
       throw new AuthFailed('密码不正确');
     }

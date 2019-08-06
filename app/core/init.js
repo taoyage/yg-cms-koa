@@ -5,7 +5,6 @@ class InitManager {
   static initCore(app) {
     this.app = app;
     this.initLoadRouters();
-    this.loadHttpException();
   }
 
   /**
@@ -22,12 +21,6 @@ class InitManager {
         InitManager.app.use(obj.routes());
       }
     }
-  }
-
-  
-
-  static loadHttpException() {
-    console.log(2);
   }
 }
 

@@ -7,11 +7,11 @@ const correctHttp = async (ctx, next) => {
     ctx.status = 201;
   };
 
-  ctx.json = function({ msg, data }) {
+  ctx.json = function({ msg, ...data }) {
     ctx.body = {
       msg: msg || 'ok',
       code: 0,
-      data
+      ...data
     };
     ctx.status = 200;
   };
