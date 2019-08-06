@@ -24,6 +24,8 @@ class InitManager {
     }
   }
 
+  
+
   static loadHttpException() {
     console.log(2);
   }

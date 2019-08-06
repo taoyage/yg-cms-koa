@@ -37,6 +37,7 @@
     "@core": "app/core",
     "@config": "app/config",
     "@middlewares": "app/middlewares",
-    "@validators": "app/validators"
+    "@validators": "app/validators",
+    "@dao": "app/dao"
   }
 }

@@ -3,10 +3,9 @@ const { Rule, LinValidator } = require('@core/validator');
 class RegisterValidator extends LinValidator {
   constructor() {
     super();
-    this.nickname = [
-      // new Rule('isNotEmpty', '昵称不可为空'),
-      new Rule('isLength', '昵称长度必须在2～10之间', 2, 10)
-    ];
+    this.username = [new Rule('matches', '用户名应该为11位数手机号码', /^1(3|4|5|6|7|8|9)\d{9}$/)];
+
+    this.nickname = [new Rule('isLength', '昵称长度必须在2～10之间', 2, 10)];
 
     this.password = [
       new Rule(
@@ -15,8 +14,12 @@ class RegisterValidator extends LinValidator {
         /^[A-Za-z0-9_*&$#@]{6,22}$/
       )
     ];
+  }
 
-    // this.confirm_password = new Rule('isNotEmpty', '确认密码不可为空');
+  validateConfirmPassword(data) {
+    if (data.body.password !== data.body.password_confirm) {
+      throw new Error('两次输入的密码不一致，请重新输入');
+    }
   }
 }
 

@@ -32,7 +32,7 @@ User.init(
   {
     id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
     nickname: Sequelize.STRING,
-    contact: {
+    username: {
       type: Sequelize.STRING(11),
       unique: true,
       allowNull: false,
@@ -50,9 +50,7 @@ User.init(
     },
     openid: {
       type: Sequelize.STRING(64),
-      unique: true,
-      allowNull: false,
-      validate: { notNull: true }
+      unique: true
     }
   },
   { sequelize: db, tableName: 'user' }
