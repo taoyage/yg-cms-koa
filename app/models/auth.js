@@ -1,5 +1,4 @@
 const { Sequelize, Model } = require('sequelize');
-const group = require('./group');
 const db = require('@core/db');
 
 class Auth extends Model {}
@@ -11,7 +10,15 @@ Auth.init(
       primaryKey: true,
       autoIncrement: true
     },
+    group_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
     auth: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    module: {
       type: Sequelize.STRING,
       allowNull: false
     }
@@ -23,7 +30,5 @@ Auth.init(
     paranoid: false
   }
 );
-
-Auth.belongsTo(group);
 
 module.exports = Auth;

@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const UserModel = require('@models/user');
 const { RegisterValidator, UpdateUserinfoValidator, LoginValidator } = require('@validators/user');
 const UserDao = require('@dao/user');
-const { loginRequire } = require('@middlewares/auth');
+const { loginRequired } = require('@middlewares/auth');
 
 const router = new Router({
   prefix: '/api/v1/user'
@@ -32,7 +32,7 @@ router.post('/', async ctx => {
 /**
  * 修改用户
  */
-router.put('/:id', loginRequire, async ctx => {
+router.put('/:id', loginRequired, async ctx => {
   const v = await new UpdateUserinfoValidator().validate(ctx);
   await userDao.updateUser(ctx, v);
   ctx.success({

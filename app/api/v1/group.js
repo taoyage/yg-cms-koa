@@ -11,6 +11,9 @@ const groupDao = new GroupDao();
 
 router.get('/', async ctx => {});
 
+/**
+ * 创建分组
+ */
 router.post('/', async ctx => {
   const v = await new CreateGroupValidator().validate(ctx);
   await groupDao.createGroup(ctx, v);

@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const { Sequelize, Model } = require('sequelize');
 const db = require('@core/db');
 const { AuthFailed } = require('@core/http-exception');
-const group = require('./group');
 
 class User extends Model {
   /**
@@ -58,11 +57,13 @@ User.init(
     openid: {
       type: Sequelize.STRING(64),
       unique: true
+    },
+    group_id: {
+      type: Sequelize.INTEGER,
+      allowNull: true
     }
   },
   { sequelize: db, tableName: 'yg_user' }
 );
-
-User.belongsTo(group);
 
 module.exports = User;

@@ -11,14 +11,14 @@ const parseHeader = ctx => {
   console.log(obj);
 };
 
-const groupRequire = async (ctx, next) => {};
+const groupRequired = async (ctx, next) => {};
 
 /**
  * 检查用户是否已登录，并验证token
  * @param {*} ctx 
  * @param {*} next 
  */
-const loginRequire = async (ctx, next) => {
+const loginRequired = async (ctx, next) => {
   if (ctx.request.method !== 'OPTIONS') {
     await parseHeader(ctx);
     await next();
@@ -28,6 +28,6 @@ const loginRequire = async (ctx, next) => {
 };
 
 module.exports = {
-  groupRequire,
-  loginRequire
+  groupRequired,
+  loginRequired
 };
