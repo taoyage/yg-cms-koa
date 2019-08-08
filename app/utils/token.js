@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { Forbidden, AuthFailed } = require('@core/http-exception');
 
 class Token {
   constructor(secretKey, expiresIn) {
@@ -6,14 +7,14 @@ class Token {
     this.expiresIn = expiresIn;
   }
 
-  createToke = uid => {
+  createToken(uid) {
     if (!this.secretKey) {
       throw new Error('密匙不能为空');
     }
     return jwt.sign({ uid }, this.secretKey, { expiresIn: this.expiresIn });
-  };
+  }
 
-  verifyToken = token => {
+  verifyToken(token) {
     if (!this.secretKey) {
       throw new Error('密匙不能为空');
     }
@@ -22,21 +23,13 @@ class Token {
       decode = jwt.verify(token, this.secretKey);
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        // token已过期 Forbidden
+        throw new Forbidden('令牌已过期');
       } else {
-        // token不合法
+        throw new AuthFailed('令牌失效');
       }
     }
     return decode;
-  };
+  }
 }
 
 module.exports = Token;
-
-// const generateToken = (uid, scope) => {
-//   const { secretKey, expiresIn } = security;
-//   const token = jwt.sign({ uid }, secretKey, { expiresIn });
-//   return token;
-// };
-
-// module.exports = { generateToken };

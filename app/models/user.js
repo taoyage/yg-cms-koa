@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const { Sequelize, Model } = require('sequelize');
 const db = require('@core/db');
 const { AuthFailed } = require('@core/http-exception');
+const group = require('./group');
 
 class User extends Model {
   /**
@@ -49,12 +50,19 @@ User.init(
         this.setDataValue('password', psw);
       }
     },
+    admin: {
+      type: Sequelize.TINYINT,
+      allowNull: false,
+      defaultValue: 1
+    },
     openid: {
       type: Sequelize.STRING(64),
       unique: true
     }
   },
-  { sequelize: db, tableName: 'user' }
+  { sequelize: db, tableName: 'yg_user' }
 );
+
+User.belongsTo(group);
 
 module.exports = User;

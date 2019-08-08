@@ -1,10 +1,13 @@
 const requireDirectory = require('require-directory');
 const Router = require('koa-router');
+const Token = require('@utils/token');
+const { security } = require('@config/security');
 
 class InitManager {
   static initCore(app) {
     this.app = app;
     this.initLoadRouters();
+    this.initToken();
   }
 
   /**
@@ -21,6 +24,15 @@ class InitManager {
         InitManager.app.use(obj.routes());
       }
     }
+  }
+
+  /**
+   * 挂载token到ctx
+   */
+  static initToken() {
+    const { secretKey, expiresIn } = security;
+    const token = new Token(secretKey, expiresIn);
+    this.app.context.token = token;
   }
 }
 
