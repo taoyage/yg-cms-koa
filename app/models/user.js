@@ -60,7 +60,7 @@ User.init(
     },
     group_id: {
       type: Sequelize.INTEGER,
-      allowNull: true
+      allowNull: false
     }
   },
   { sequelize: db, tableName: 'yg_user' }

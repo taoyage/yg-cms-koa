@@ -2,7 +2,7 @@ const GroupModel = require('@models/group');
 const AuthModel = require('@models/auth');
 const { ParameterException } = require('@core/http-exception');
 const db = require('@core/db');
-const authsEnums = require('@config/auths');
+const { authMap } = require('@utils/enum');
 
 class GroupDao {
   async createGroup(ctx, v) {
@@ -28,19 +28,15 @@ class GroupDao {
       );
 
       const auths = v.get('body.auths');
-      for (const module in auths) {
-        const mArr = authsEnums[module];
-        if (mArr) {
-          for (const item of auths[module]) {
-            if (mArr.includes(item)) {
-              await AuthModel.create(
-                { module, auth: item, group_id: gp.id },
-                {
-                  transaction
-                }
-              );
+
+      for (const auth of auths) {
+        if (authMap[auth]) {
+          await AuthModel.create(
+            { module: authMap[auth], auth, group_id: gp.id },
+            {
+              transaction
             }
-          }
+          );
         }
       }
 

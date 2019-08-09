@@ -7,6 +7,12 @@ class RegisterValidator extends LinValidator {
 
     this.nickname = [new Rule('isLength', '昵称长度必须在2～10之间', 2, 10)];
 
+    this.group_id = [
+      new Rule('isInt', '分组id必须是整数，且大于0', {
+        min: 1
+      })
+    ];
+
     this.password = [
       new Rule(
         'matches',

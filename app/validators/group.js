@@ -12,12 +12,17 @@ class CreateGroupValidator extends LinValidator {
   validateAuths(data) {
     const auths = data.body.auths;
 
-    if (!auths || !Object.keys(auths)) {
-      throw new Error('auths必须为非空对象');
+    if (!auths) {
+      throw new Error('auths必须是非空数组');
     }
-    for (let key in auths) {
-      if (!Array.isArray(auths[key])) {
-        throw new Error('auths对象key中的value必须是非空数组');
+
+    if (!Array.isArray(auths)) {
+      throw new Error('auths必须是非空数组');
+    }
+
+    for (let item of auths) {
+      if (!item) {
+        throw new Error('auths数组中的每一项都不允许为空');
       }
     }
   }

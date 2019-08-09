@@ -43,7 +43,7 @@ router.put('/:id', loginRequired, async ctx => {
 /**
  * 删除某个用户
  */
-router.delete('/', async ctx => {
+router.delete('/:id', loginRequired, async ctx => {
   ctx.body = 'delete';
 });
 

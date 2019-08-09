@@ -13,6 +13,25 @@ const loginType = {
   isThisType
 };
 
+const auths = {
+  user: ['getUser', 'createUser', 'updateUser', 'deleteUser'],
+  group: ['getGroup', 'createGroup', 'updateGroup', 'deleteGroup']
+};
+
+const authMap = generateAuthMap();
+
+function generateAuthMap() {
+  let authTree = {};
+  for (let key in auths) {
+    for (let val of auths[key]) {
+      authTree[val] = key;
+    }
+  }
+  return authTree;
+}
+
 module.exports = {
-  loginType
+  loginType,
+  auths,
+  authMap
 };
