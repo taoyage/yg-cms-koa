@@ -14,8 +14,8 @@ const loginType = {
 };
 
 const auths = {
-  user: ['getUser', 'createUser', 'updateUser', 'deleteUser'],
-  group: ['getGroup', 'createGroup', 'updateGroup', 'deleteGroup']
+  user: ['创建用户', '更新用户', '查看用户', '删除用户'],
+  group: ['创建分组', '更新分组', '查看分组', '删除分组']
 };
 
 const authMap = generateAuthMap();
