@@ -1,6 +1,6 @@
-const { Rule, LinValidator } = require('@core/validator');
+const { Rule, BearValidator } = require('@core/validator2');
 
-class CreateGroupValidator extends LinValidator {
+class CreateGroupValidator extends BearValidator {
   constructor() {
     super();
     this.name = [new Rule('isLength', '组名长度必须在1～64之间', 1, 64)];
