@@ -1,6 +1,6 @@
-const { Rule, BearValidator } = require('@core/validator2');
+const { Rule, AccordValidator } = require('@lib/validator');
 
-class CreateGroupValidator extends BearValidator {
+class CreateGroupValidator extends AccordValidator {
   constructor() {
     super();
     this.name = [new Rule('isLength', '组名长度必须在1～64之间', 1, 64)];

@@ -27,7 +27,6 @@ const groupRequired = async (ctx, next) => {
     if (!group_id) {
       throw new AuthFailed('您还没有任何权限组，请联系管理员');
     }
-
   }
 };
 

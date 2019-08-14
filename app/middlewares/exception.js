@@ -1,4 +1,4 @@
-const { HttpException } = require('../core/http-exception');
+const { HttpException } = require('@lib/validator');
 const { env } = require('@config/security');
 
 const catchError = async (ctx, next) => {

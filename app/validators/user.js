@@ -1,6 +1,6 @@
-const { Rule, BearValidator } = require('@core/validator2');
+const { Rule, AccordValidator } = require('@lib/validator');
 
-class RegisterValidator extends BearValidator {
+class RegisterValidator extends AccordValidator {
   constructor() {
     super();
     this.username = [new Rule('matches', '用户名应该为11位数手机号码', /^1(3|4|5|6|7|8|9)\d{9}$/)];
@@ -29,14 +29,14 @@ class RegisterValidator extends BearValidator {
   }
 }
 
-class UpdateUserinfoValidator extends BearValidator {
+class UpdateUserinfoValidator extends AccordValidator {
   constructor() {
     super();
     this.nickname = [new Rule('isLength', '昵称长度必须在2～10之间', 2, 10)];
   }
 }
 
-class LoginValidator extends BearValidator {
+class LoginValidator extends AccordValidator {
   constructor() {
     super();
     this.username = [new Rule('matches', '用户名应该为11位数手机号码', /^1(3|4|5|6|7|8|9)\d{9}$/)];
