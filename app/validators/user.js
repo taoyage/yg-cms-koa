@@ -5,7 +5,10 @@ class RegisterValidator extends AccordValidator {
     super();
     this.username = [new Rule('matches', '用户名应该为11位数手机号码', /^1(3|4|5|6|7|8|9)\d{9}$/)];
 
-    this.nickname = [new Rule('isLength', '昵称长度必须在2～10之间', 2, 10)];
+    this.nickname = [
+      new Rule('isOptional', '', 'test111'),
+      new Rule('isLength', '昵称长度必须在2～10之间', 2, 10)
+    ];
 
     this.group_id = [
       new Rule('isInt', '分组id必须是整数，且大于0', {

@@ -24,6 +24,7 @@ class UserDao {
     us.nickname = v.get('body.nickname');
     us.password = v.get('body.password');
     us.group_id = v.get('body.group_id');
+
     us.save();
   }
 

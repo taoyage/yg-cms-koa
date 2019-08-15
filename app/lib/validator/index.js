@@ -5,7 +5,30 @@ const { HttpException, ParameterException } = require('./httpException');
 class AccordValidator {
   constructor() {
     this.data = {};
+    this.parsed = {};
     this.errors = [];
+  }
+
+  /**
+   * 根据path获取解析后的值
+   * @param {*} path
+   * @param {*} parsed
+   */
+  get(path, parsed = true) {
+    let defaultVal = null;
+    if (arguments.length >= 3) {
+      defaultVal = arguments[2];
+    }
+    if (parsed) {
+      const value = _.get(this.parsed, path, defaultVal);
+      if (!value) {
+        const keys = path.split('.');
+        const key = _.last(keys);
+        return _.get(this.parsed.default, key, defaultVal);
+      }
+      return value;
+    }
+    return _.get(this.data, path, defaultVal);
   }
 
   /**
@@ -15,21 +38,102 @@ class AccordValidator {
    * @param {*} ctx koa context
    */
   async validate(ctx) {
-    this.data = _.cloneDeep({
-      body: ctx.request.body,
-      query: ctx.request.query,
-      path: ctx.params,
-      header: ctx.request.header
-    });
+    const data = this._getDatas(ctx);
+    this.data = _.cloneDeep(data);
+    this.parsed = _.cloneDeep({ ...data, default: {} });
+
 
     const propertyNames = this._getInstanceProperty(this);
     for (let key of propertyNames) {
       let result = await this._checkRule(key);
+      if (!result.success) {
+        throw new ParameterException(result.msg);
+      }
     }
+
+    ctx.v = this;
+    return this;
   }
 
-  _checkRule(key) {
-    
+  /**
+   * 获取context中数据
+   * @param {*} ctx
+   */
+  _getDatas(ctx) {
+    return {
+      body: ctx.request.body,
+      query: ctx.request.query,
+      path: ctx.params,
+      header: ctx.request.header
+    };
+  }
+
+  /**
+   * 验证rule
+   * @param {*} key
+   */
+  async _checkRule(key) {
+    const isCustomFunc = typeof this[key] === 'function' ? true : false;
+    // 自定义的校验函数
+    if (isCustomFunc) {
+      try {
+        await this[key](this.data);
+      } catch (err) {
+        return { msg: err.message || '参数错误', success: false };
+      }
+    } else {
+      const [dataKey, dataVal] = this._findDataValAndKey(key);
+
+      // 当数据为空，则检查是否为isOptional,如果有则返回默认值，如果没有则报错
+
+      if (!dataVal) {
+        for (let ruleInstance of this[key]) {
+          if (!ruleInstance.optional) {
+            return { msg: `${key}为必填参数`, success: false };
+          } else {
+            this.parsed['default'][key] = ruleInstance.defaultVal;
+            return {
+              success: true
+            };
+          }
+        }
+      } else {
+        // 验证每个rule实例
+        for (let ruleInstance of this[key]) {
+          // rule实例中没有optional才进行校验
+          if (!ruleInstance.optional) {
+            let result = ruleInstance.validate(this.data[dataKey][key]);
+
+            // 验证不通过处理
+            if (!result) {
+              return { msg: ruleInstance.message, success: false };
+            }
+
+            _.set(this.parsed, [dataKey, key], ruleInstance.parsedValue);
+          }
+        }
+      }
+    }
+
+    return {
+      msg: 'ok',
+      success: true
+    };
+  }
+
+  /**
+   * 查找data对应的key和value
+   * @param {*} key
+   */
+  _findDataValAndKey(key) {
+    const keys = Reflect.ownKeys(this.data);
+    for (const k of keys) {
+      const val = _.get(this.data[k], key);
+      if (val !== void 0) {
+        return [k, val];
+      }
+    }
+    return [];
   }
 
   /**
@@ -77,7 +181,41 @@ class AccordValidator {
   }
 }
 
-class Rule {}
+/**
+ * 规则校验，基于validator库进行验证
+ */
+class Rule {
+  constructor(validatorFuc, message, ...options) {
+    this.validatorFunc = validatorFuc;
+    this.message = message;
+    this.options = options;
+    this.optional = false;
+    if (this.validatorFunc === 'isOptional') {
+      this.optional = true;
+      this.defaultVal = options && options[0];
+    }
+  }
+  validate(value) {
+    // 数据转换，验证
+    value = typeof value === 'string' ? value : String(value);
+    switch (this.validatorFunc) {
+      case 'isInt':
+        this.parsedValue = validator.toInt(value);
+        return validator.isInt(value, ...this.options);
+      case 'isFloat':
+        this.parsedValue = validator.toFloat(value);
+        return validator.isFloat(value, ...this.options);
+      case 'isBoolean':
+        this.parsedValue = validator.toBoolean(value);
+        return validator.isBoolean(value);
+      case 'isNotEmpty':
+        return value !== '' && value !== null && value !== undefined;
+      default:
+        this.parsedValue = value;
+        return validator[this.validatorFunc](value, ...this.options);
+    }
+  }
+}
 
 module.exports = {
   AccordValidator,

@@ -23,6 +23,7 @@ router.get('/', async ctx => {
  */
 router.post('/', async ctx => {
   const v = await new RegisterValidator().validate(ctx);
+  console.log('xxxxxxx', v.get('body.username'));
   await userDao.createUser(ctx, v);
   ctx.success({
     msg: '用户创建成功'
